@@ -1,6 +1,8 @@
-module Page.Home exposing (Model, Msg, toSession, init, update)
+module Page.Home exposing (Model, Msg, toSession, init, update, view)
 
 import Session exposing (Session)
+import Html
+import Html.Styled exposing (..)
 
 -- ---------------------------
 -- INIT
@@ -38,3 +40,13 @@ type Msg =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     ( model, Cmd.none )
+
+-- ---------------------------
+-- VIEW
+-- ---------------------------
+
+view : Model -> { title : String, content : Html msg }
+view model =
+    { title = "home",
+      content = div [] [ text "Home" ]
+    }

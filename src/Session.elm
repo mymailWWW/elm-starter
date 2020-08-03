@@ -1,4 +1,4 @@
-module Session exposing (Session, navKey, changes, fromMe)
+module Session exposing (Session, navKey, changes, fromMe, toMe)
 
 import Browser.Navigation as Nav
 import Api exposing (Me, meChanges)
@@ -29,6 +29,16 @@ fromMe key maybeMe =
 
         Nothing ->
             Guest key
+
+toMe : Session -> Maybe Me
+toMe session =
+    case session of
+        LoggedIn _ me ->
+            Just me
+
+        Guest _ ->
+            Nothing
+
 
 changes : (Session -> msg) -> Nav.Key -> Sub msg
 changes toMsg key =

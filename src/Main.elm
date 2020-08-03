@@ -1,6 +1,8 @@
 module Main exposing (main)
 
-import Html exposing (..)
+import Html
+import Html.Styled exposing (..)
+import Html.Styled.Attributes exposing (..)
 import Api exposing (Me, application)
 import Browser exposing (Document)
 import Url exposing (Url)
@@ -8,7 +10,9 @@ import Browser.Navigation as Nav
 import Json.Encode exposing (Value)
 import Page.Home as Home
 import Page.Login as Login
-import Session exposing (Session, fromMe)
+import Page.NotFound as NotFound
+import Page.Blank as Blank
+import Session exposing (Session, fromMe, toMe)
 import Route as Route exposing (Route)
 import Menu as Menu
 import Tuple
@@ -163,8 +167,39 @@ addMenuToModel model menu =
 
 view : Model -> Document Msg
 view model =
-    { title = "Main Page"
-    , body = [ div [] [ text "Hello elm" ] ]
+    let maybeMe = toMe (toSession model.page)
+        viewMenu menu mm =
+            Html.Styled.map MenuMsg (Menu.view menu mm)
+
+        subPage menu { title, content } toMsg =
+          ( title
+          , div [] [
+              menu
+              , div [ class "container" ] [ Html.Styled.map toMsg content ]
+          ])
+
+        otherSubPage { title, content } =
+          ( title
+          , content
+          )
+
+        viewPage m =
+            case m.page of
+                Home home ->
+                    subPage (viewMenu m.menu maybeMe) (Home.view home) HomeMsg
+
+                Login login ->
+                    subPage (viewMenu m.menu maybeMe) (Login.view login) LoginMsg
+
+                Redirect _ ->
+                    otherSubPage Blank.view
+
+                NotFound _ ->
+                    otherSubPage NotFound.view
+
+    in
+    { title = ( Tuple.first << viewPage ) model
+    , body = [(( Tuple.second << viewPage ) >> toUnstyled ) model ]
     }
 
 -- ---------------------------
