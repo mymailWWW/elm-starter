@@ -6,6 +6,9 @@ import Html.Styled.Attributes exposing (..)
 import Html.Styled.Events exposing (onClick)
 import Api exposing (Me)
 import Route as Route exposing (Route)
+import Style.Menu exposing (..)
+import Css exposing (..)
+
 
 -- Menu with state
 
@@ -14,7 +17,7 @@ import Route as Route exposing (Route)
 -- ---------------------------
 
 init : Model
-init = { open = False }
+init = { checked = False }
 
 -- ---------------------------
 -- MODEL
@@ -29,7 +32,7 @@ type Msg =
     LinkClicked
     | HamburgerClicked
 
-type alias Model = { open : Bool }
+type alias Model = { checked : Bool }
 
 -- ---------------------------
 -- UPDATE
@@ -37,28 +40,43 @@ type alias Model = { open : Bool }
 
 update : Msg -> Model -> Model
 update msg model =
-    model
+    case msg of
+        HamburgerClicked ->
+            { model | checked = not model.checked }
+
+        LinkClicked ->
+            { model | checked = False }
 
 -- ---------------------------
 -- VIEW
 -- ---------------------------
 
+toClassName : String -> Bool -> String
+toClassName baseName checked =
+    if checked then
+        baseName ++ "__checked"
+    else
+        baseName
+
 view : Model -> Maybe Me -> Html Msg
 view model maybeMe =
-    div [ class "header" ] [
-      a [ href "#", class "logo" ] [ text "CSS Nav" ]
-      , input [ class "menu-btn", type_ "checkbox", id "menu-btn" ] []
-      , label [ class "menu-icon", for "menu-btn" ] [
+    div [ class "header", css headerCss ] [
+      a [ href "#", class "logo", css headerLogoCss ] [ text "CSS Nav" ]
+      , div [ class (toClassName "menu-btn" model.checked)
+            , id "menu-btn"
+            , css [ hover [ backgroundColor (hex "f4f4f4") ]]]
+            []
+      , label [ class "menu-icon", for "menu-btn", onClick HamburgerClicked ] [
         span [ class "navicon" ] []
       ]
-      , ul [ class "menu" ] [
-        li [] [ a [ href "#" ] [ text "Our Work" ]]
+      , ul [ class "menu", css headerUlCss ] [
+        navbarLink Route.Home [ text "Our Work" ]
         , navbarLink Route.Home [ text "Home" ]
         , navbarLink Route.Login [ text "Login" ]
-        , li [] [ a [ href "#" ] [ text "Contact" ]]
+        , navbarLink Route.Home [ text "Contact" ]
       ]
     ]
 
 navbarLink : Route -> List ( Html Msg ) -> Html Msg
 navbarLink route linkContent =
-    li [ class "fade" ] [ a [ Route.href route, onClick LinkClicked ] linkContent ]
+    li [ class "fade" ] [ a [ Route.href route, onClick LinkClicked, css headerLiACss ] linkContent ]

@@ -1,42 +1,4 @@
 
-/* header */
-
-.header {
-  background-color: #fff;
-  box-shadow: 1px 1px 4px 0 rgba(0,0,0,.1);
-  position: fixed;
-  top: 0px;
-  width: 100%;
-  z-index: 3;
-}
-
-.header ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  overflow: hidden;
-  background-color: #fff;
-}
-
-.header li a {
-  display: block;
-  padding: 20px 20px;
-  border-right: 1px solid #f4f4f4;
-  text-decoration: none;
-}
-
-.header li a:hover,
-.header .menu-btn:hover {
-  background-color: #f4f4f4;
-}
-
-.header .logo {
-  display: block;
-  float: left;
-  font-size: 2em;
-  padding: 10px 20px;
-  text-decoration: none;
-}
 
 /* menu */
 
@@ -91,24 +53,49 @@
   display: none;
 }
 
-.header .menu-btn:checked ~ .menu {
+// Here change checked by a className
+
+// .header .menu-btn:checked ~ .menu {
+//   max-height: 240px;
+// }
+//
+// .header .menu-btn:checked ~ .menu-icon .navicon {
+//   background: transparent;
+// }
+//
+// .header .menu-btn:checked ~ .menu-icon .navicon:before {
+//   transform: rotate(-45deg);
+// }
+//
+// .header .menu-btn:checked ~ .menu-icon .navicon:after {
+//   transform: rotate(45deg);
+// }
+//
+// .header .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:before,
+// .header .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:after {
+//   top: 0;
+// }
+
+//
+
+.header .menu-btn__checked ~ .menu {
   max-height: 240px;
 }
 
-.header .menu-btn:checked ~ .menu-icon .navicon {
+.header .menu-btn__checked ~ .menu-icon .navicon {
   background: transparent;
 }
 
-.header .menu-btn:checked ~ .menu-icon .navicon:before {
+.header .menu-btn__checked ~ .menu-icon .navicon:before {
   transform: rotate(-45deg);
 }
 
-.header .menu-btn:checked ~ .menu-icon .navicon:after {
+.header .menu-btn__checked ~ .menu-icon .navicon:after {
   transform: rotate(45deg);
 }
 
-.header .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:before,
-.header .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:after {
+.header .menu-btn__checked ~ .menu-icon:not(.steps) .navicon:before,
+.header .menu-btn__checked ~ .menu-icon:not(.steps) .navicon:after {
   top: 0;
 }
 
