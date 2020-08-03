@@ -1,4 +1,4 @@
-port module Api exposing (..)
+port module Api exposing (Me, logout, application, meChanges)
 
 import Url exposing (Url)
 import Browser.Navigation as Nav
@@ -57,11 +57,25 @@ storageDecoder =
         (Decode.field "token" tokenDecoder)
       )
 
+decodeFromChange : Value -> Maybe Me
+decodeFromChange val =
+    Decode.decodeValue storageDecoder val
+        |> Result.toMaybe
+
+meChanges : (Maybe Me -> msg) -> Sub msg
+meChanges toMsg  =
+    onStoreChange (\value -> toMsg (decodeFromChange value))
+
+logout : Cmd msg
+logout = storeCache Nothing
+
 -- ---------------------------
 -- PORT
 -- ---------------------------
 
 port storeCache : Maybe Value -> Cmd msg
+
+port onStoreChange : ( Value -> msg ) -> Sub msg
 
 -- ---------------------------
 -- APPLICATION
