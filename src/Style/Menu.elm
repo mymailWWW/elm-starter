@@ -29,6 +29,7 @@ headerLiACss =
     , padding2 (px 10) (px 20)
     , borderRight3 (px 1) solid (hex "f4f4f4")
     , textDecoration none
+    , border3 (px 1) solid (hex "f4f4f4")
     , hover [
         backgroundColor (hex "f4f4f4")
       ]
@@ -38,7 +39,5 @@ headerLogoCss : List Style
 headerLogoCss =
     [ display block
     , float left
-    , fontSize (Css.em 2)
     , padding2 (px 10) (px 20)
-    , textDecoration none
     ]

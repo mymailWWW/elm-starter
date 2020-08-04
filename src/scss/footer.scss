@@ -1,0 +1,141 @@
+// constants
+
+// TODO problem with vertical align
+
+$social-size-small: 20px;
+
+$social-size-big: 35px;
+
+$menu-height-big: 50px;
+
+$menu-height-small: 25px;
+
+
+.footer__wrapper {
+  background: white;
+  margin-top: 100px;
+  height: 300px;
+}
+
+.footer__container {
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  display: grid;
+  grid-template-areas:
+    "menu0"
+    "menu1"
+    "menu2"
+    "social"
+}
+
+@mixin footer__menu($grid-area-value, $height) {
+  grid-area: $grid-area-value;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: $height;
+}
+
+@mixin footer__social__element($url, $size) {
+  background: url($url);
+  width: $size;
+  height: $size;
+  background-size: cover;
+}
+
+.footer__menu__0 {
+  @include footer__menu(menu0, $menu-height-small)
+}
+
+.footer__menu__1 {
+  @include footer__menu(menu1, $menu-height-small)
+}
+
+.footer__menu__2 {
+  @include footer__menu(menu2, $menu-height-small)
+}
+
+.footer__menu__item {
+  text-decoration: none;
+  color: black;
+  font-size: large;
+}
+
+.footer__social {
+  grid-area: social;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: $menu-height-small;
+  margin-top: 15px;
+}
+
+.footer__social__facebook {
+  @include footer__social__element('images/facebook.svg', $social-size-big);
+  // border: 2px solid black;
+}
+
+.footer__social__vk {
+  @include footer__social__element('images/vk.svg', $social-size-big);
+  // border: 2px solid black;
+}
+
+.footer__social__twitter {
+  @include footer__social__element('images/twitter.svg', $social-size-big);
+  // border: 2px solid black;
+}
+
+.footer__social__rss {
+  @include footer__social__element('images/rss.svg', $social-size-big);
+  // border: 2px solid black;
+}
+
+@media (min-width: 48em) {
+  .footer__wrapper {
+    margin-top: 100px;
+  }
+
+  .footer__container {
+    display: grid;
+    grid-template-areas:
+      "menu0 menu1 menu2 social"
+  }
+
+  .footer__menu__0 {
+    @include footer__menu(menu0, $menu-height-big)
+  }
+
+  .footer__menu__1 {
+    @include footer__menu(menu1, $menu-height-big)
+  }
+
+  .footer__menu__2 {
+    @include footer__menu(menu2, $menu-height-big)
+  }
+
+  .footer__social {
+    grid-area: social;
+    display: flex;
+    align-items: center;
+    height: $menu-height-big;
+    margin-top: 0px;
+  }
+
+  .footer__social__facebook {
+    @include footer__social__element('images/facebook.svg', $social-size-small);
+  }
+
+  .footer__social__vk {
+    @include footer__social__element('images/vk.svg', $social-size-small);
+  }
+
+  .footer__social__rss {
+    @include footer__social__element('images/rss.svg', $social-size-small);
+  }
+
+  .footer__social__twitter {
+    @include footer__social__element('images/twitter.svg', $social-size-small);
+  }
+
+}

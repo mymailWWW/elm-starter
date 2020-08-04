@@ -9,6 +9,7 @@ import Route as Route exposing (Route)
 import Style.Menu exposing (..)
 import Css exposing (..)
 
+-- TODO selectioned route
 
 -- Menu with state
 
@@ -54,14 +55,14 @@ update msg model =
 toClassName : String -> Bool -> String
 toClassName baseName checked =
     if checked then
-        baseName ++ "__checked"
+        baseName ++ "--checked"
     else
         baseName
 
 view : Model -> Maybe Me -> Html Msg
 view model maybeMe =
     div [ class "header", css headerCss ] [
-      a [ href "#", class "logo", css headerLogoCss ] [ text "CSS Nav" ]
+      a [ href "#", class "logo", css headerLogoCss ] []
       , div [ class (toClassName "menu-btn" model.checked)
             , id "menu-btn"
             , css [ hover [ backgroundColor (hex "f4f4f4") ]]]
@@ -79,4 +80,4 @@ view model maybeMe =
 
 navbarLink : Route -> List ( Html Msg ) -> Html Msg
 navbarLink route linkContent =
-    li [ class "fade" ] [ a [ Route.href route, onClick LinkClicked, css headerLiACss ] linkContent ]
+    li [] [ a [ Route.href route, onClick LinkClicked, css headerLiACss ] linkContent ]

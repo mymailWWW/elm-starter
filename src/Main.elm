@@ -12,6 +12,7 @@ import Page.Home as Home
 import Page.Login as Login
 import Page.NotFound as NotFound
 import Page.Blank as Blank
+import Footer as Footer
 import Session exposing (Session, fromMe, toMe)
 import Route as Route exposing (Route)
 import Menu as Menu
@@ -24,7 +25,7 @@ import Tuple
 init : Maybe Me -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init maybeMe url navKey =
     let ( page, cmd ) =
-            changeRouteTo (Route.fromUrl url) (Redirect (fromMe navKey maybeMe))
+            changeRouteTo ( Route.fromUrl url ) ( Redirect ( fromMe navKey maybeMe ))
     in
     ({ menu = Menu.init, page = page }, cmd )
 
@@ -106,7 +107,7 @@ type Msg =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case ( msg, model.page ) of
-        ( ChangeUrl url,  _ ) ->
+        ( ChangeUrl url, _ ) ->
             changeRouteTo (Route.fromUrl url) model.page
             |> Tuple.mapFirst (addPageToModel model)
 
@@ -176,6 +177,7 @@ view model =
           , div [] [
               menu
               , div [ class "container" ] [ Html.Styled.map toMsg content ]
+              , Footer.view
           ])
 
         otherSubPage { title, content } =
