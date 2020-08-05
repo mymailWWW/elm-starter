@@ -157,6 +157,12 @@ update msg model =
             ( Menu.update subMsg model.menu, Cmd.none )
                 |> Tuple.mapFirst (addMenuToModel model)
 
+        ( GotSession session, Redirect _ ) ->
+            ( Redirect session
+            , Route.replaceUrl (Session.navKey session) Route.Home
+            )
+            |> Tuple.mapFirst (addPageToModel model)
+
         ( _, _ ) ->
             ( model, Cmd.none )
 
