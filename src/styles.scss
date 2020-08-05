@@ -14,10 +14,10 @@ body {
   background-size: cover;
   margin-left: auto;
   margin-right: auto;
-}
+  }
 
-.haskell-gif {
-  @include p-element('images/haskell.gif')
+.haskell {
+  @include p-element('images/haskell.png')
 }
 
 .proof {

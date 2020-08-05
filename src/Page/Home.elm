@@ -49,5 +49,5 @@ update msg model =
 view : Model -> { title : String, content : Html msg }
 view model =
     { title = "home",
-      content = div [ class "haskell-gif" ] []
+      content = div [ class "haskell" ] []
     }
