@@ -1,7 +1,5 @@
 // constants
 
-// TODO problem with vertical align
-
 $social-size-small: 20px;
 
 $social-size-big: 35px;
@@ -37,11 +35,12 @@ $menu-height-small: 25px;
   height: $height;
 }
 
-@mixin footer__social__element($url, $size) {
+@mixin footer__social__element($url, $size, $border-size) {
   background: url($url);
   width: $size;
   height: $size;
   background-size: cover;
+  border: $border-size solid black;
 }
 
 .footer__menu__0 {
@@ -72,23 +71,19 @@ $menu-height-small: 25px;
 }
 
 .footer__social__facebook {
-  @include footer__social__element('images/facebook.svg', $social-size-big);
-  // border: 2px solid black;
+  @include footer__social__element('images/facebook.svg', $social-size-big, 2px);
 }
 
 .footer__social__vk {
-  @include footer__social__element('images/vk.svg', $social-size-big);
-  // border: 2px solid black;
+  @include footer__social__element('images/vk.svg', $social-size-big, 2px);
 }
 
 .footer__social__twitter {
-  @include footer__social__element('images/twitter.svg', $social-size-big);
-  // border: 2px solid black;
+  @include footer__social__element('images/twitter.svg', $social-size-big, 2px);
 }
 
 .footer__social__rss {
-  @include footer__social__element('images/rss.svg', $social-size-big);
-  // border: 2px solid black;
+  @include footer__social__element('images/rss.svg', $social-size-big, 2px);
 }
 
 @media (min-width: 48em) {
@@ -123,19 +118,19 @@ $menu-height-small: 25px;
   }
 
   .footer__social__facebook {
-    @include footer__social__element('images/facebook.svg', $social-size-small);
+    @include footer__social__element('images/facebook.svg', $social-size-small, 0px);
   }
 
   .footer__social__vk {
-    @include footer__social__element('images/vk.svg', $social-size-small);
+    @include footer__social__element('images/vk.svg', $social-size-small, 0px);
   }
 
   .footer__social__rss {
-    @include footer__social__element('images/rss.svg', $social-size-small);
+    @include footer__social__element('images/rss.svg', $social-size-small, 0px);
   }
 
   .footer__social__twitter {
-    @include footer__social__element('images/twitter.svg', $social-size-small);
+    @include footer__social__element('images/twitter.svg', $social-size-small, 0px);
   }
 
 }

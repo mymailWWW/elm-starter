@@ -15,6 +15,7 @@ type Route
     = Root
     | Home
     | Login
+    | Register
     | Logout
 
 -- ---------------------------
@@ -29,6 +30,7 @@ parser =
         [ map Home top
         , Parser.map Login (s "login")
         , Parser.map Logout (s "logout")
+        , Parser.map Register (s "register")
         ]
 
 fromUrl : Url -> Maybe Route
@@ -70,6 +72,9 @@ toString page =
 
                 Login ->
                     [ "login" ]
+
+                Register ->
+                    [ "register" ]
 
                 Logout ->
                     [ "logout" ]

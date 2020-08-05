@@ -1,4 +1,4 @@
-module Username exposing (Username, toString, encoder, decoder, urlParser)
+module Username exposing (Username, toString, encoder, decoder, urlParser, minLength)
 
 import Url.Parser
 import Url exposing (Url)
@@ -11,6 +11,13 @@ import Json.Encode as Encode exposing (Value)
 -- ---------------------------
 
 type Username = Username String
+
+-- ---------------------------
+-- VALIDATION
+-- ---------------------------
+
+minLength : Int
+minLength = 4
 
 -- ---------------------------
 -- REPRESENTATIONS

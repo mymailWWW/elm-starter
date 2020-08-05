@@ -33,11 +33,12 @@ headerLiACss =
     , hover [
         backgroundColor (hex "f4f4f4")
       ]
+    , color (hex "000")
     ]
 
 headerLogoCss : List Style
 headerLogoCss =
     [ display block
     , float left
-    , padding2 (px 10) (px 20)
+    , padding2 (px 10) (px 10)
     ]

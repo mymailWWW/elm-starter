@@ -1,32 +1,40 @@
-module Page.Login exposing (Model, Msg, toSession, init, update, view, subscriptions)
+module Page.Register exposing (Model, Msg, toSession, init, update, view)
 
 import Session exposing (Session)
 import Html
 import Html.Styled exposing (..)
 import Email as Email
+import Password as Password
+import Username as Username
 import Route as Route
+import Generic.List exposing (takeWhile)
 
 -- ---------------------------
 -- INIT
 -- ---------------------------
 
+emptyForm : Form
+emptyForm =
+    { email = ""
+    , password = ""
+    , repeatPassword = ""
+    , name = ""
+    }
+
 init : Session -> ( Model, Cmd Msg )
 init session =
     ({ session = session
-     , form =
-      { email = ""
-      , password = ""
-      }
+    , form = emptyForm
     , formState = NoneActive
-    , problems = []
-    }, Cmd.none )
+    , problems = [] }
+    , Cmd.none )
 
 -- ---------------------------
 -- TYPE
 -- ---------------------------
 
 type alias Form =
-    { email : String, password : String }
+    { email : String, password : String, repeatPassword : String, name : String }
 
 type FormState =
     NoneActive
@@ -35,14 +43,15 @@ type FormState =
 type Field =
     Email
     | Password
+    | RepeatPassword
+    | Name
 
 type TrimmedForm = Trimmed Form
 
 type Problem
     = InvalidEntry Field String
-    -- | here put server error
+    -- | ServerError (Graphql.Http.Error Me)
 
--- Example of response when using elm-graphql client
 -- type alias ResponseData = RemoteData (Graphql.Http.Error Me) Me
 
 -- ---------------------------
@@ -64,6 +73,8 @@ trimFields : Form -> TrimmedForm
 trimFields form =
     Trimmed { email = String.trim form.email
             , password = String.trim form.password
+            , repeatPassword = String.trim form.repeatPassword
+            , name = String.trim form.name
             }
 
 validate : Form -> List Field -> Result (List Problem) TrimmedForm
@@ -87,11 +98,24 @@ validateField (Trimmed form) field =
                 Email.validate form.email
 
             Password ->
-                if String.isEmpty form.password then
-                    [ "password can't be blank." ]
+                Password.validate form.password
 
+            RepeatPassword ->
+                if String.isEmpty form.repeatPassword then
+                    [ "password can't be blank." ]
+                else if form.password /= form.repeatPassword then
+                    [ "passwords must be iquals." ]
                 else
                     []
+
+            Name ->
+                if String.isEmpty form.name then
+                    [ "username can't be blank." ]
+                else if (String.length form.name ) < Username.minLength then
+                    [ "username must be at least " ++ String.fromInt Username.minLength  ++ " long." ]
+                else
+                    []
+
 
 -- ---------------------------
 -- SESSION
@@ -107,9 +131,13 @@ toSession model = model.session
 type Msg =
     EnteredEmail String
     | EnteredPassword String
+    | EnteredRepeatPassword String
+    | EnteredName String
     | SubmittedForm
     | FocusedEmail
     | FocusedPassword
+    | FocusedRepeatPassword
+    | FocusedName
     -- | SentCredentials ResponseData
     | GotSession Session
 
@@ -126,30 +154,30 @@ update msg model =
         EnteredPassword password ->
             updateForm (\form -> {form | password = password}) model
 
+        EnteredRepeatPassword repeatPassword ->
+            updateForm (\form -> {form | repeatPassword = repeatPassword}) model
+
+        EnteredName name ->
+            updateForm (\form -> {form | name = name}) model
+
+        FocusedName ->
+            ({ model | formState = Active Name, problems = [] }, Cmd.none )
+
         FocusedEmail ->
-            ({ model | formState = Active Email }, Cmd.none )
+            focus model Email
 
         FocusedPassword ->
-            let fieldsToValidate = [ Email ]
-                withFormState = { model | formState = Active Password }
-            in
-            case validate model.form fieldsToValidate of
-                Ok trimmedForm ->
-                    ({ withFormState | problems = [] }, Cmd.none )
-                Err problems ->
-                    ({ withFormState | problems = problems }, Cmd.none )
+            focus model Password
+
+        FocusedRepeatPassword ->
+            focus model RepeatPassword
 
         SubmittedForm ->
-            let fieldsToValidate =
-                    [ Email
-                    , Password
-                    ]
-            in
-            case validate model.form fieldsToValidate of
+            case validate model.form fieldsInOrder of
                 Ok trimmedForm ->
-                    ( { model | problems = [] }
-                    -- Here put your login cmd
-                    -- , login trimmedForm SentCredentials
+                    ({ model | problems = [] }
+                    -- Here put your register command
+                    -- , register trimmedForm SentCredentials
                     , Cmd.none
                     )
 
@@ -171,11 +199,38 @@ update msg model =
             ({ model | session = session }
             , Route.replaceUrl (Session.navKey session) Route.Home)
 
+-- Order of fields to validate
+fieldsInOrder : List Field
+fieldsInOrder = [ Name, Email, Password, RepeatPassword ]
 
--- Internal
+-- Internal Helper
 updateForm : (Form -> Form) -> Model -> ( Model, Cmd Msg )
 updateForm updater model =
     ({ model | form = updater model.form }, Cmd.none )
+
+-- Delete the problem of the active field
+deleteFieldProblems : List Problem -> Field -> List Problem
+deleteFieldProblems problems activeField =
+    List.filter
+      (\e -> case e of
+          InvalidEntry field msg ->
+              field /= activeField
+          -- _ ->
+          --     False
+      )
+      problems
+
+-- Helper function to set the active field and validate the previous fields
+focus : Model -> Field -> ( Model, Cmd Msg )
+focus model activeField =
+    let beforeActive = takeWhile (\field -> field /= activeField ) fieldsInOrder
+        withFormState = { model | formState = Active activeField }
+    in
+    case validate model.form beforeActive of
+        Ok trimmedForm ->
+            ({ withFormState | problems = [] }, Cmd.none )
+        Err problems ->
+            ({ withFormState | problems = problems }, Cmd.none )
 
 -- ---------------------------
 -- VIEW
@@ -183,14 +238,6 @@ updateForm updater model =
 
 view : Model -> { title : String, content : Html msg }
 view model =
-    { title = "login",
-      content = div [] [ text "Login" ]
+    { title = "register",
+      content = div [] [ text "Register" ]
     }
-
--- ---------------------------
--- SUBSCRIPTION
--- ---------------------------
-
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Session.changes GotSession (Session.navKey model.session)

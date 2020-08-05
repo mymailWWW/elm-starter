@@ -10,6 +10,7 @@ import Style.Menu exposing (..)
 import Css exposing (..)
 
 -- TODO selectioned route
+-- TODO plug various menus
 
 -- Menu with state
 
@@ -28,6 +29,7 @@ type Page
     = Other
     | Home
     | Login
+    | Register
 
 type Msg =
     LinkClicked
@@ -59,6 +61,7 @@ toClassName baseName checked =
     else
         baseName
 
+
 view : Model -> Maybe Me -> Html Msg
 view model maybeMe =
     div [ class "header", css headerCss ] [
@@ -71,8 +74,8 @@ view model maybeMe =
         span [ class "navicon" ] []
       ]
       , ul [ class "menu", css headerUlCss ] [
-        navbarLink Route.Home [ text "Our Work" ]
-        , navbarLink Route.Home [ text "Home" ]
+        navbarLink Route.Home [ text "Home" ]
+        , navbarLink Route.Register[ text "Register" ]
         , navbarLink Route.Login [ text "Login" ]
         , navbarLink Route.Home [ text "Contact" ]
       ]

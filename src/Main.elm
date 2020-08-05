@@ -10,6 +10,7 @@ import Browser.Navigation as Nav
 import Json.Encode exposing (Value)
 import Page.Home as Home
 import Page.Login as Login
+import Page.Register as Register
 import Page.NotFound as NotFound
 import Page.Blank as Blank
 import Footer as Footer
@@ -51,6 +52,10 @@ changeRouteTo maybeRoute page =
             ( Login.init session )
               |> updateWith Login LoginMsg
 
+        Just Route.Register ->
+            ( Register.init session )
+              |> updateWith Register RegisterMsg
+
         Just Route.Logout ->
             ( Redirect session, Api.logout )
 
@@ -69,6 +74,7 @@ type Page =
     | NotFound Session
     | Home Home.Model
     | Login Login.Model
+    | Register Register.Model
 
 type alias Model =
     { page : Page, menu : Menu.Model }
@@ -88,6 +94,9 @@ toSession page =
         Login login ->
             Login.toSession login
 
+        Register register ->
+            Register.toSession register
+
 -- ---------------------------
 -- MSG
 -- ---------------------------
@@ -96,6 +105,7 @@ type Msg =
     ClickedLink Browser.UrlRequest
     | ChangeUrl Url
     | LoginMsg Login.Msg
+    | RegisterMsg Register.Msg
     | HomeMsg Home.Msg
     | MenuMsg Menu.Msg
     | GotSession Session
@@ -136,6 +146,11 @@ update msg model =
         ( LoginMsg subMsg, Login login ) ->
             ( Login.update subMsg login )
                 |> updateWith Login LoginMsg
+                |> Tuple.mapFirst (addPageToModel model)
+
+        ( RegisterMsg subMsg, Register register ) ->
+            ( Register.update subMsg register )
+                |> updateWith Register RegisterMsg
                 |> Tuple.mapFirst (addPageToModel model)
 
         ( MenuMsg subMsg, _ ) ->
@@ -188,10 +203,13 @@ view model =
         viewPage m =
             case m.page of
                 Home home ->
-                    subPage (viewMenu m.menu maybeMe) (Home.view home) HomeMsg
+                    subPage (viewMenu m.menu maybeMe) ( Home.view home ) HomeMsg
 
                 Login login ->
-                    subPage (viewMenu m.menu maybeMe) (Login.view login) LoginMsg
+                    subPage (viewMenu m.menu maybeMe) ( Login.view login ) LoginMsg
+
+                Register register ->
+                    subPage (viewMenu m.menu maybeMe) ( Register.view register ) RegisterMsg
 
                 Redirect _ ->
                     otherSubPage Blank.view
@@ -213,6 +231,9 @@ subscriptions model =
     case model.page of
         Redirect _ ->
             Session.changes GotSession (Session.navKey (toSession model.page))
+
+        Login login ->
+            Sub.map LoginMsg (Login.subscriptions login)
 
         _ ->
             Sub.none
