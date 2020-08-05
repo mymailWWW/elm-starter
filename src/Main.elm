@@ -65,7 +65,7 @@ changeRouteTo maybeRoute page =
 -- ---------------------------
 
 -- There is two shared states accross the spa :
--- Menu which holds an open state and
+-- Menu which holds an "open" or not state and
 -- Session which is passed to the next page via toSession
 
 
@@ -234,6 +234,9 @@ subscriptions model =
 
         Login login ->
             Sub.map LoginMsg (Login.subscriptions login)
+
+        Register register ->
+            Sub.map RegisterMsg (Register.subscriptions register)
 
         _ ->
             Sub.none

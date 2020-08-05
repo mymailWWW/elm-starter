@@ -1,4 +1,4 @@
-module Page.Register exposing (Model, Msg, toSession, init, update, view)
+module Page.Register exposing (Model, Msg, toSession, init, update, view, subscriptions)
 
 import Session exposing (Session)
 import Html
@@ -243,3 +243,11 @@ view model =
     { title = "register",
       content = div [ class "proof" ] []
     }
+
+-- ---------------------------
+-- SUBSCRIPTION
+-- ---------------------------
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Session.changes GotSession (Session.navKey model.session)
