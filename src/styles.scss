@@ -7,8 +7,41 @@ body {
     margin-top: 75px;
 }
 
+@mixin p-element($url) {
+  background: url($url);
+  width: 90%;
+  height: 90%;
+  background-size: cover;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.haskell-gif {
+  @include p-element('images/haskell.gif')
+}
+
+.proof {
+  @include p-element('images/proof.png')
+}
+
+.idris {
+  @include p-element('images/idris.png')
+}
+
 .container {
-    max-width: 800px;
+    height: 600px;
+    max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
+    background-color: white;
+}
+
+@media (min-width: 48em) {
+  .container {
+      height: 800px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: white;
+  }
 }

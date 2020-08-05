@@ -3,6 +3,7 @@ module Page.Home exposing (Model, Msg, toSession, init, update, view)
 import Session exposing (Session)
 import Html
 import Html.Styled exposing (..)
+import Html.Styled.Attributes exposing (..)
 
 -- ---------------------------
 -- INIT
@@ -48,5 +49,5 @@ update msg model =
 view : Model -> { title : String, content : Html msg }
 view model =
     { title = "home",
-      content = div [] [ text "Home" ]
+      content = div [ class "haskell-gif" ] []
     }

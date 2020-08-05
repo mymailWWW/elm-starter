@@ -3,8 +3,10 @@ module Page.Login exposing (Model, Msg, toSession, init, update, view, subscript
 import Session exposing (Session)
 import Html
 import Html.Styled exposing (..)
+import Html.Styled.Attributes exposing (..)
 import Email as Email
 import Route as Route
+
 
 -- ---------------------------
 -- INIT
@@ -184,7 +186,7 @@ updateForm updater model =
 view : Model -> { title : String, content : Html msg }
 view model =
     { title = "login",
-      content = div [] [ text "Login" ]
+      content = div [ class "idris" ] []
     }
 
 -- ---------------------------

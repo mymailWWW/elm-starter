@@ -3,11 +3,13 @@ module Page.Register exposing (Model, Msg, toSession, init, update, view)
 import Session exposing (Session)
 import Html
 import Html.Styled exposing (..)
+import Html.Styled.Attributes exposing (..)
 import Email as Email
 import Password as Password
 import Username as Username
 import Route as Route
 import Generic.List exposing (takeWhile)
+
 
 -- ---------------------------
 -- INIT
@@ -239,5 +241,5 @@ focus model activeField =
 view : Model -> { title : String, content : Html msg }
 view model =
     { title = "register",
-      content = div [] [ text "Register" ]
+      content = div [ class "proof" ] []
     }
