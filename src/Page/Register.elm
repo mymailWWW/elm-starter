@@ -9,7 +9,7 @@ import Password as Password
 import Username as Username
 import Route as Route
 import Generic.List exposing (takeWhile)
-
+import Style.Image exposing (imageCss)
 
 -- ---------------------------
 -- INIT
@@ -241,7 +241,7 @@ focus model activeField =
 view : Model -> { title : String, content : Html msg }
 view model =
     { title = "register",
-      content = div [ class "proof" ] []
+      content = img [ src "images/proof.png", css imageCss ] []
     }
 
 -- ---------------------------

@@ -6,7 +6,7 @@ import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
 import Email as Email
 import Route as Route
-
+import Style.Image exposing (imageCss)
 
 -- ---------------------------
 -- INIT
@@ -186,7 +186,7 @@ updateForm updater model =
 view : Model -> { title : String, content : Html msg }
 view model =
     { title = "login",
-      content = div [ class "idris" ] []
+      content = img [ src "images/idris.png", css imageCss ] []
     }
 
 -- ---------------------------

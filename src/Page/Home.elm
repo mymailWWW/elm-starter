@@ -4,6 +4,7 @@ import Session exposing (Session)
 import Html
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
+import Style.Image exposing (imageCss)
 
 -- ---------------------------
 -- INIT
@@ -46,8 +47,9 @@ update msg model =
 -- VIEW
 -- ---------------------------
 
+
 view : Model -> { title : String, content : Html msg }
 view model =
     { title = "home",
-      content = div [ class "haskell" ] []
+      content = img [ src "images/haskell.png", css imageCss ] []
     }
